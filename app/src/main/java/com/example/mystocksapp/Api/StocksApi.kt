@@ -6,6 +6,10 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface StocksApi {
-    @GET("v3/reference/tickers?")
-    suspend fun getStocksList(): Response<StocksResponse<List<Stocks>>>
+    @GET("v3/reference/tickers?&market=stocks")
+    suspend fun getStocksList(
+        @Query("search") query: String,
+        @Query("market") market: String = "stocks",
+        @Query("limit") limit: Int = 1000
+        ): Response<StocksResponse<List<Stocks>>>
 }

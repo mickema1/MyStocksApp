@@ -14,30 +14,37 @@ import kotlinx.coroutines.launch
 class StocksViewModel(private val stocksApi: StocksApi): ViewModel() {
     private val _stocksList = MutableStateFlow<ApiResult<List<Stocks>>>(ApiResult.Loading)
     val stocksList: StateFlow<ApiResult<List<Stocks>>> = _stocksList.asStateFlow()
+    private val _searchQuery = MutableStateFlow("")
 
-    fun getStockList() {
+    fun updateSearchQuery(query: String) {
+        _searchQuery.value = query
+    }
+
+    fun getStockList(query: String) {
         viewModelScope.launch {
             _stocksList.value = ApiResult.Loading
             try {
-                val response = stocksApi.getStocksList()
+                val response = stocksApi.getStocksList(query)
                 if (response.isSuccessful) {
                     val data = response.body()?.data
-                    if(data != null){
+                    if (data != null) {
                         _stocksList.value = ApiResult.Success(data)
-                        Log.d("StocksViewModel", "getStocksList: ${response.body()?.data}")
-                    }else{
-                        _stocksList.value = ApiResult.Error("Data is null")
-                        Log.e("StocksViewModel", "Data is null")
+                        Log.d("StocksViewModel", "Found ${data.size} results for \"$query\"")
+                    } else {
+                        _stocksList.value = ApiResult.Error("No results found.")
+                        Log.e("StocksViewModel", "Data is null for \"$query\"")
                     }
                 } else {
-                    _stocksList.value = ApiResult.Error("Error fetching stocks list: ${response.message()}")
-                    Log.e("StocksViewModel", "Error fetching stocks list: ${response.message()}")
+                    _stocksList.value = ApiResult.Error("Error fetching stocks: ${response.message()}")
+                    Log.e("StocksViewModel", "Error fetching stocks: ${response.message()}")
                 }
             } catch (e: Exception) {
-                _stocksList.value = ApiResult.Error("Exception fetching stocks list: ${e.message}")
-                Log.e("StockViewModel", "Exception fetching stocks list: ${e.message}")
+                _stocksList.value = ApiResult.Error("Exception: ${e.message}")
+                Log.e("StocksViewModel", "Exception fetching stocks: ${e.message}")
             }
         }
     }
+
+
 
 }

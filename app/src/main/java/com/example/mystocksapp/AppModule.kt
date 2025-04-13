@@ -8,7 +8,6 @@ import coil.ImageLoader
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
 import com.example.mystocksapp.Api.StocksApi
-import com.example.mystocksapp.repository.StocksRepository
 import com.example.mystocksapp.viewModels.StocksViewModel
 import io.objectbox.BoxStore
 import io.objectbox.kotlin.boxFor
@@ -23,7 +22,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 val repositoryModule = module {
-    single { StocksRepository(get()) }
 }
 
 val viewModelModule = module {
