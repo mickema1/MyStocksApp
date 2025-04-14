@@ -5,6 +5,6 @@ object Routes {
     const val StocksList = "stocksList"
     const val Settings = "settings"
     const val StocksDetail = "stocksDetail/{stockId}"
-    const val FavouriteStocks = "favouriteStock"
+    const val SavedStocks = "savedStocks"
 
 }

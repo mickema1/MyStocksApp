@@ -5,14 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -38,6 +33,7 @@ import org.koin.core.context.startKoin
 import androidx.navigation.compose.rememberNavController
 import com.example.mystocksapp._const.BottomNavItem
 import com.example.mystocksapp._const.Routes
+import com.example.mystocksapp.screens.SavedTickerScreen
 import com.example.mystocksapp.screens.StockDetailScreen
 import com.example.mystocksapp.screens.StockListScreen
 
@@ -54,7 +50,7 @@ class MainActivity : ComponentActivity() {
                 repositoryModule,
                 viewModelModule,
                 networkModule,
-                //objectBoxModule,
+                objectBoxModule,
                 imageModule,
                 helperModule)
         }
@@ -76,7 +72,7 @@ fun MainScreen(navController: NavHostController) {
     //náš list itemů použitých v bottom navigation bar
     val items = listOf(
         BottomNavItem.StocksList,
-        BottomNavItem.FavouriteStocks
+        BottomNavItem.SavedStocks
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -151,7 +147,7 @@ fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
                 StockDetailScreen(cryptoId)
             }
         }
-        //composable(Routes.FavouriteStocks) { FavouriteStocksScreen(navController) }
+        composable(Routes.SavedStocks) { SavedTickerScreen(navController) }
         //composable(Routes.Settings) { SettingsScreen() }
     }
 }

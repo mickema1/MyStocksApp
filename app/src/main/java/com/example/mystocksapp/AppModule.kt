@@ -8,6 +8,10 @@ import coil.ImageLoader
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
 import com.example.mystocksapp.Api.StocksApi
+import com.example.mystocksapp.data.MyObjectBox
+import com.example.mystocksapp.data.SavedTickerEntity
+import com.example.mystocksapp.repository.SavedTickersRepository
+import com.example.mystocksapp.viewModels.SavedTickerViewModel
 import com.example.mystocksapp.viewModels.StocksViewModel
 import io.objectbox.BoxStore
 import io.objectbox.kotlin.boxFor
@@ -22,10 +26,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 val repositoryModule = module {
+    single { SavedTickersRepository(get()) }
 }
 
 val viewModelModule = module {
     viewModel { StocksViewModel(get()) }
+    viewModel { SavedTickerViewModel(get(),get()) }
 }
 
 val imageModule = module {
@@ -38,14 +44,14 @@ val networkModule = module {
     single { provideStocksApi(get()) }
 }
 
-/*val objectBoxModule = module {
+val objectBoxModule = module {
     single {
         MyObjectBox.builder()
             .androidContext(androidContext())
             .build()
     }
-    single { get<BoxStore>().boxFor(FavouriteStockEntity::class.java) }
-}*/
+    single { get<BoxStore>().boxFor(SavedTickerEntity::class.java) }
+}
 
 val helperModule = module {
     //single { NotificationHelper(androidContext()) }

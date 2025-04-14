@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Info
@@ -26,57 +28,47 @@ import androidx.navigation.NavController
 import com.example.mystocksapp.R
 import com.example.mystocksapp._const.Routes
 import com.example.mystocksapp.data.Stocks
+import com.example.mystocksapp.viewModels.SavedTickerViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun StockItem(
     stocks: Stocks,
     navController: NavController,
-    //isFavourite: Boolean = false,
-    //viewModel: FavouriteCryptoViewModel = koinViewModel()
+    isSaved: Boolean = false,
+    viewModel: SavedTickerViewModel = koinViewModel()
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            /*.clickable {
-                navController.navigate(Routes.StocksDetail())
-            }*/,
+            .clickable {
+                //navController.navigate(Routes.StocksDetail())
+            },
         verticalAlignment = Alignment.CenterVertically
     )
     {
-        Image(
-            painter = painterResource(R.drawable.coin), //todo temp using coin
-            contentDescription = "${stocks.name} icon",
-            modifier = Modifier.size(48.dp)
-        )
-
         Spacer(Modifier.width(16.dp))
 
         Column(modifier = Modifier.weight(1f)) {
             Text(text = stocks.name, fontWeight = FontWeight.Bold)
-            //Text(text = "Symbol: ${stocks.symbol}")
+            Text(text = "Locale: ${stocks.locale}")
             Text(text = "Currency: ${stocks.currencyName}")
-            Text(text = "Last updated: ${stocks.lastUpdatedUtc}%")
+            Text(text = "Ticker: ${stocks.ticker}")
         }
 
         IconButton(onClick = {
-            //navController.navigate(Routes.StocksDetail(stocks.id))
-        }) {
-            Icon(Icons.Filled.Info, contentDescription = "Detail")
-        }
-
-        IconButton(onClick = {
-            /*if (!isFavourite) {
-                viewModel.addFavouriteCrypto(crypto)
+            if (!isSaved) {
+                viewModel.saveTicker(stocks)
             } else {
-                viewModel.removeFavouriteCrypto(crypto)
-            }*/
+                viewModel.removeSavedTicker(stocks.ticker)
+            }
         }) {
-            /*if (!isFavourite) {
-                Icon(Icons.Filled.FavoriteBorder, contentDescription = "Add to favourite")
+            if (!isSaved) {
+                Icon(Icons.Filled.Add, contentDescription = "Add to favourite")
             }else{
-                Icon(Icons.Filled.Favorite, contentDescription = "Remove from favourites")
-            }*/
+                Icon(Icons.Filled.Clear, contentDescription = "Remove from favourites")
+            }
         }
     }
 }

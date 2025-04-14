@@ -14,6 +14,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,16 +26,23 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.mystocksapp.Api.ApiResult
 import com.example.mystocksapp.items.StockItem
+import com.example.mystocksapp.viewModels.SavedTickerViewModel
 import com.example.mystocksapp.viewModels.StocksViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun StockListScreen(
     navController: NavController,
-    viewModel: StocksViewModel = koinViewModel()
+    viewModel: StocksViewModel = koinViewModel(),
+    savedViewModel: SavedTickerViewModel = koinViewModel()
 ) {
     val stockList by viewModel.stocksList.collectAsState()
     var currentQuery by remember { mutableStateOf("") }
+    val saved by savedViewModel.savedTickers.collectAsState()
+
+    LaunchedEffect(Unit) {
+        savedViewModel.loadSavedTickers()
+    }
 
     Column(modifier = Modifier
         .padding(16.dp)
@@ -80,9 +88,27 @@ fun StockListScreen(
 
             is ApiResult.Success -> {
                 val stocks = (stockList as ApiResult.Success).data
-                LazyColumn {
-                    items(stocks) { stock ->
-                        StockItem(stocks = stock, navController = navController)
+                if (stocks.isEmpty()) {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        Text(
+                            text = "No results found for '$currentQuery'.",
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                } else {
+                    LazyColumn {
+                        items(stocks) { stock ->
+                            val isSaved = if (saved is ApiResult.Success) {
+                                (saved as ApiResult.Success).data.any { it.ticker == stock.ticker }
+                            } else {
+                                false
+                            }
+                            StockItem(
+                                stocks = stock,
+                                navController = navController,
+                                isSaved = isSaved
+                            )
+                        }
                     }
                 }
             }

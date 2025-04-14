@@ -1,0 +1,11 @@
+package com.example.mystocksapp.data
+
+import io.objectbox.annotation.Entity
+import io.objectbox.annotation.Id
+
+@Entity
+data class SavedTickerEntity (
+    @Id var id: Long = 0,
+    var name: String,
+    var ticker: String
+)
