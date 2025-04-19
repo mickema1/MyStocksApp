@@ -43,7 +43,7 @@ fun StockItem(
             .fillMaxWidth()
             .padding(8.dp)
             .clickable {
-                //navController.navigate(Routes.StocksDetail())
+                navController.navigate(Routes.stockDetail(ticker = stocks.ticker))
             },
         verticalAlignment = Alignment.CenterVertically
     )

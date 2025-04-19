@@ -12,6 +12,7 @@ import com.example.mystocksapp.data.MyObjectBox
 import com.example.mystocksapp.data.SavedTickerEntity
 import com.example.mystocksapp.repository.SavedTickersRepository
 import com.example.mystocksapp.viewModels.SavedTickerViewModel
+import com.example.mystocksapp.viewModels.StockDetailsViewModel
 import com.example.mystocksapp.viewModels.StocksViewModel
 import io.objectbox.BoxStore
 import io.objectbox.kotlin.boxFor
@@ -32,6 +33,7 @@ val repositoryModule = module {
 val viewModelModule = module {
     viewModel { StocksViewModel(get()) }
     viewModel { SavedTickerViewModel(get(),get()) }
+    viewModel { StockDetailsViewModel(get())}
 }
 
 val imageModule = module {

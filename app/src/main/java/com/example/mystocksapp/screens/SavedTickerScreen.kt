@@ -17,9 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.mystocksapp.Api.ApiResult
 import com.example.mystocksapp.data.SavedTickerEntity
-import com.example.mystocksapp.data.Stocks
 import com.example.mystocksapp.items.SavedTickerItem
-import com.example.mystocksapp.items.StockItem
 import com.example.mystocksapp.viewModels.SavedTickerViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -47,12 +45,11 @@ fun SavedTickerScreen(navController: NavController, viewModel: SavedTickerViewMo
                         items(savedList) { ticker ->
                             SavedTickerItem(
                                 ticker = ticker,
-                                onClick = {
-                                    navController.navigate("detail/${ticker.ticker}")
-                                },
                                 onRemoveClick = {
                                     viewModel.removeSavedTicker(ticker.ticker)
-                                }
+                                },
+                                navController = navController,
+                                savedStock = ticker
                             )
                         }
                     }

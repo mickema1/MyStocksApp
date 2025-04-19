@@ -17,6 +17,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.composable
+import androidx.navigation.NavType
+import androidx.navigation.NavController
+import androidx.navigation.navArgument
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,7 +53,6 @@ class MainActivity : ComponentActivity() {
             modules(repositoryModule,
                 viewModelModule,
                 repositoryModule,
-                viewModelModule,
                 networkModule,
                 objectBoxModule,
                 imageModule,
@@ -81,7 +85,7 @@ fun MainScreen(navController: NavHostController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Crypto App") },
+                title = { Text("Stocks App") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = Color.White
@@ -141,13 +145,26 @@ fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
         modifier = Modifier.padding(innerPadding)
     ) {
         composable(Routes.StocksList) { StockListScreen(navController) }
-        composable(Routes.StocksDetail) { navBackStackEntry ->
-            val cryptoId = navBackStackEntry.arguments?.getString("cryptoId")
-            if (cryptoId != null) {
-                StockDetailScreen(cryptoId)
+        composable(
+            route = "${Routes.StocksDetail}/{ticker}",
+            arguments = listOf(navArgument("ticker") { type = NavType.StringType })
+        ) { navBackStackEntry ->
+            val ticker = navBackStackEntry.arguments?.getString("ticker")
+            if (ticker != null) {
+                StockDetailScreen(navController ,ticker = ticker)
+            } else {
+                Text("No ticker provided")
             }
         }
         composable(Routes.SavedStocks) { SavedTickerScreen(navController) }
+        composable(Routes.StocksDetail) { navBackStackEntry ->
+            val ticker = navBackStackEntry.arguments?.getString("ticker")
+            if (ticker!= null) {
+                StockDetailScreen(
+                    ticker = ticker,
+                    navController = navController,
+                )
+            } }
         //composable(Routes.Settings) { SettingsScreen() }
     }
 }

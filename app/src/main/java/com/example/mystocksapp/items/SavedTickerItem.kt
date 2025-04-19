@@ -15,14 +15,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.mystocksapp._const.Routes
 import com.example.mystocksapp.data.SavedTickerEntity
 
 @Composable
-fun SavedTickerItem(ticker: SavedTickerEntity, onClick: () -> Unit, onRemoveClick: () -> Unit) {
+fun SavedTickerItem(ticker: SavedTickerEntity,
+                    onRemoveClick: () -> Unit,
+                    navController: NavController,
+                    savedStock : SavedTickerEntity
+                    ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() }
+            .clickable {
+                navController.navigate(Routes.stockDetail(ticker = savedStock.ticker)) }
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
