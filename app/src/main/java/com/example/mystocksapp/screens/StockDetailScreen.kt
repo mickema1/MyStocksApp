@@ -2,6 +2,8 @@ package com.example.mystocksapp.screens
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,9 +13,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -29,16 +33,34 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import com.example.mystocksapp.Api.ApiResult
 import com.example.mystocksapp.viewModels.StockDetailsViewModel
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
 import org.koin.androidx.compose.koinViewModel
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+import java.util.Date
+import java.util.Locale
 
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun StockDetailScreen(
     navController: NavController,
@@ -156,6 +178,69 @@ fun StockDetailScreen(
                         }
                     }
 
+
+                    Row {
+                        Button(onClick = {
+                            val today = LocalDate.now(ZoneOffset.UTC)
+                            val yesterday = today.minusDays(1)
+                            val yesterdayStart = today.minusDays(2)
+                            val fromDate = yesterdayStart.toString()
+                            val toDate = yesterday.toString()
+
+                            viewModel.getStockGraph(
+                                ticker = ticker,
+                                from = fromDate,
+                                to = toDate,
+                                timespan = "hour"
+                            )
+                        }) {
+                            Text("Yesterday")
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Button(onClick = {
+                            val today = LocalDate.now(ZoneOffset.UTC)
+                            val thirtyDays = today.minusDays(30)
+                            val fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                            val fromDate = thirtyDays.format(fmt)
+                            val toDate = today.format(fmt)
+
+                            viewModel.getStockGraph(
+                                ticker = ticker,
+                                from   = fromDate,
+                                to     = toDate,
+                                timespan = "day"
+                            )
+                        }) {
+                            Text("Last Month")
+                        }
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Button(onClick = {
+                            val today = LocalDate.now(ZoneOffset.UTC)
+                            val yesterday = today.minusDays(1)
+                            val yesterdayStart = today.minusDays(365)
+                            val fromDate = yesterdayStart.toString()
+                            val toDate = yesterday.toString()
+
+                            viewModel.getStockGraph(
+                                ticker = ticker,
+                                from = fromDate,
+                                to = toDate,
+                                timespan = "month"
+                            )
+                        }) {
+                            Text("Past year")
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    val graphState = viewModel.graphData.collectAsState()
+
+                    if (graphState.value is ApiResult.Success && (graphState.value as ApiResult.Success).data.isNotEmpty()) {
+                        StockGraphScreen(viewModel)
+                    }
+
                 } else {
                     Text(text = "Stock not found", style = MaterialTheme.typography.bodyLarge)
                 }
@@ -196,4 +281,45 @@ fun valueFormatter(value: Double?):String{
     } else {
         return String.format("%.2f", value) // Just a regular number
     }
+}
+
+@Composable
+fun StockGraphScreen(viewModel: StockDetailsViewModel) {
+    val graphDataResult by viewModel.graphData.collectAsState()
+
+    when (graphDataResult) {
+        is ApiResult.Loading -> {
+            CircularProgressIndicator()
+        }
+        is ApiResult.Success -> {
+            val entries = (graphDataResult as ApiResult.Success).data
+            LineChartComposable(entries = entries)
+        }
+        is ApiResult.Error -> {
+            Text("Error fetching graph data", color = Color.Red)
+        }
+    }
+}
+
+@Composable
+fun LineChartComposable(entries: List<Entry>) {
+    val context = LocalContext.current
+    val chart = remember { LineChart(context) }
+
+    val lineDataSet = LineDataSet(entries, "Stock Price")
+    lineDataSet.color = Color.Green.toArgb()
+    lineDataSet.valueTextColor = Color.Black.toArgb()
+
+    val lineData = LineData(lineDataSet)
+
+    LaunchedEffect(entries) {
+        chart.data = lineData
+        chart.xAxis.setDrawLabels(false)
+        chart.invalidate()
+    }
+
+    AndroidView(
+        factory = { chart },
+        modifier = Modifier.fillMaxWidth().height(300.dp)
+    )
 }

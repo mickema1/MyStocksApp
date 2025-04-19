@@ -19,4 +19,14 @@ interface StocksApi {
         @Path("ticker") ticker: String
     ): Response<StockDetailResponse>
 
+    @GET("v2/aggs/ticker/{stocksTicker}/range/{multiplier}/{timespan}/{from}/{to}")
+    suspend fun getAggregateGraph(
+        @Path("stocksTicker") stocksTicker: String,
+        @Path("multiplier") multiplier: Int,
+        @Path("timespan") timespan: String,
+        @Path("from") from: String,
+        @Path("to") to: String,
+
+    ): Response<AggregateBarsResponse>
+
 }

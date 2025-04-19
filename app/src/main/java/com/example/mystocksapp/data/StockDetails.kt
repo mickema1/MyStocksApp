@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class StockDetails(
     @SerializedName("count") val count: Int?,
-    @SerializedName("request_id") val requestId: String?,
+    @SerializedName("request_id") val requestId: String,
     @SerializedName("status") val status: String?,
 
     // TickerDetails
@@ -19,7 +19,7 @@ data class StockDetails(
     @SerializedName("locale") val locale: String?,
     @SerializedName("market") val market: String?,
     @SerializedName("market_cap") val marketCap: Double?,
-    @SerializedName("name") val name: String?,
+    @SerializedName("name") val name: String,
     @SerializedName("phone_number") val phoneNumber: String?,
     @SerializedName("primary_exchange") val primaryExchange: String?,
     @SerializedName("round_lot") val roundLot: Int?,
@@ -27,7 +27,7 @@ data class StockDetails(
     @SerializedName("share_class_shares_outstanding") val shareClassSharesOutstanding: Long?,
     @SerializedName("sic_code") val sicCode: String?,
     @SerializedName("sic_description") val sicDescription: String?,
-    @SerializedName("ticker") val ticker: String?,
+    @SerializedName("ticker") val ticker: String,
     @SerializedName("ticker_root") val tickerRoot: String?,
     @SerializedName("ticker_suffix") val tickerSuffix: String?,
     @SerializedName("total_employees") val totalEmployees: Int?,

@@ -15,7 +15,6 @@ import com.example.mystocksapp.viewModels.SavedTickerViewModel
 import com.example.mystocksapp.viewModels.StockDetailsViewModel
 import com.example.mystocksapp.viewModels.StocksViewModel
 import io.objectbox.BoxStore
-import io.objectbox.kotlin.boxFor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -87,7 +86,7 @@ fun provideOkHttpClient(): OkHttpClient {
 
 
 fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
-    //Get ApiKey from properties
+    //TODO Get ApiKey from properties
     //val polygonApiKey: String = System.getProperty("polygonApiKey") ?: throw IllegalStateException("API key is missing")
 
     val polygonApiKey: String = "Dqp4SuuiUB_5ynx3TB29v4tnpzrUrThp" //todo read from properties
