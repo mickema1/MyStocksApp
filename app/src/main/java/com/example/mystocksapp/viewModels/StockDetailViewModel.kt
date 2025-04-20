@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mystocksapp.Api.ApiResult
 import com.example.mystocksapp.Api.StocksApi
-import com.example.mystocksapp.data.StockDetails
+import com.example.mystocksapp.data.Dao.StockDetails
 import com.github.mikephil.charting.data.Entry
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -182,8 +182,8 @@ fun StockDetailScreen(
                     Row {
                         Button(onClick = {
                             val today = LocalDate.now(ZoneOffset.UTC)
-                            val yesterday = today.minusDays(1)
-                            val yesterdayStart = today.minusDays(2)
+                            val yesterday = today.minusDays(2)
+                            val yesterdayStart = today.minusDays(3)
                             val fromDate = yesterdayStart.toString()
                             val toDate = yesterday.toString()
 
@@ -194,7 +194,7 @@ fun StockDetailScreen(
                                 timespan = "hour"
                             )
                         }) {
-                            Text("Yesterday")
+                            Text("Two days ago")
                         }
                         Spacer(modifier = Modifier.width(8.dp))
                         Button(onClick = {

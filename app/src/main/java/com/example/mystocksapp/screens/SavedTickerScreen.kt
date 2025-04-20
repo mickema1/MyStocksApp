@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.mystocksapp.Api.ApiResult
-import com.example.mystocksapp.data.SavedTickerEntity
+import com.example.mystocksapp.data.Entity.SavedTickerEntity
 import com.example.mystocksapp.items.SavedTickerItem
 import com.example.mystocksapp.viewModels.SavedTickerViewModel
 import org.koin.androidx.compose.koinViewModel

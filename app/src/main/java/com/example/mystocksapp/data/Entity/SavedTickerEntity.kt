@@ -1,4 +1,4 @@
-package com.example.mystocksapp.data
+package com.example.mystocksapp.data.Entity
 
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id

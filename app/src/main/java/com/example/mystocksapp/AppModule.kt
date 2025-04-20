@@ -8,8 +8,8 @@ import coil.ImageLoader
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
 import com.example.mystocksapp.Api.StocksApi
-import com.example.mystocksapp.data.MyObjectBox
-import com.example.mystocksapp.data.SavedTickerEntity
+import com.example.mystocksapp.data.Entity.MyObjectBox
+import com.example.mystocksapp.data.Entity.SavedTickerEntity
 import com.example.mystocksapp.repository.SavedTickersRepository
 import com.example.mystocksapp.viewModels.SavedTickerViewModel
 import com.example.mystocksapp.viewModels.StockDetailsViewModel

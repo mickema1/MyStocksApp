@@ -1,6 +1,6 @@
 package com.example.mystocksapp.Api
 
-import com.example.mystocksapp.data.AggregateBar
+import com.example.mystocksapp.data.Dao.AggregateBar
 import com.google.gson.annotations.SerializedName
 
 data class AggregateBarsResponse(

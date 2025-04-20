@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.mystocksapp._const.Routes
-import com.example.mystocksapp.data.SavedTickerEntity
+import com.example.mystocksapp.data.Entity.SavedTickerEntity
 
 @Composable
 fun SavedTickerItem(ticker: SavedTickerEntity,

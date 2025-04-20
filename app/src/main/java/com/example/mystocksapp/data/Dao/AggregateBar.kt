@@ -1,4 +1,4 @@
-package com.example.mystocksapp.data
+package com.example.mystocksapp.data.Dao
 
 import com.google.gson.annotations.SerializedName
 
