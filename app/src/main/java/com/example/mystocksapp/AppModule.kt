@@ -9,8 +9,11 @@ import coil.disk.DiskCache
 import coil.memory.MemoryCache
 import com.example.mystocksapp.Api.StocksApi
 import com.example.mystocksapp.data.Entity.MyObjectBox
+import com.example.mystocksapp.data.Entity.SavedNewsEntity
 import com.example.mystocksapp.data.Entity.SavedTickerEntity
+import com.example.mystocksapp.repository.NewsRepository
 import com.example.mystocksapp.repository.SavedTickersRepository
+import com.example.mystocksapp.viewModels.NewsViewModel
 import com.example.mystocksapp.viewModels.SavedTickerViewModel
 import com.example.mystocksapp.viewModels.StockDetailsViewModel
 import com.example.mystocksapp.viewModels.StocksViewModel
@@ -20,19 +23,22 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
 val repositoryModule = module {
-    single { SavedTickersRepository(get()) }
+    single { SavedTickersRepository(get(named("tickerBox"))) }
+    single { NewsRepository(get(named("newsBox"))) }
 }
 
 val viewModelModule = module {
     viewModel { StocksViewModel(get()) }
     viewModel { SavedTickerViewModel(get(),get()) }
     viewModel { StockDetailsViewModel(get())}
+    viewModel { NewsViewModel(get(), get()) }
 }
 
 val imageModule = module {
@@ -51,7 +57,12 @@ val objectBoxModule = module {
             .androidContext(androidContext())
             .build()
     }
-    single { get<BoxStore>().boxFor(SavedTickerEntity::class.java) }
+    single(named("tickerBox")) {
+        get<BoxStore>().boxFor(SavedTickerEntity::class.java)
+    }
+    single(named("newsBox")) {
+        get<BoxStore>().boxFor(SavedNewsEntity::class.java)
+    }
 }
 
 val helperModule = module {

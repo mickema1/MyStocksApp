@@ -38,6 +38,7 @@ import org.koin.core.context.startKoin
 import androidx.navigation.compose.rememberNavController
 import com.example.mystocksapp._const.BottomNavItem
 import com.example.mystocksapp._const.Routes
+import com.example.mystocksapp.screens.NewsListScreen
 import com.example.mystocksapp.screens.SavedTickerScreen
 import com.example.mystocksapp.screens.StockDetailScreen
 import com.example.mystocksapp.screens.StockListScreen
@@ -50,9 +51,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         startKoin {
             androidContext(this@MainActivity)
-            modules(repositoryModule,
-                viewModelModule,
+            modules(
                 repositoryModule,
+                viewModelModule,
                 networkModule,
                 objectBoxModule,
                 imageModule,
@@ -76,7 +77,8 @@ fun MainScreen(navController: NavHostController) {
     //náš list itemů použitých v bottom navigation bar
     val items = listOf(
         BottomNavItem.StocksList,
-        BottomNavItem.SavedStocks
+        BottomNavItem.SavedStocks,
+        BottomNavItem.News
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -165,7 +167,7 @@ fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
                     navController = navController,
                 )
             } }
-        //composable(Routes.Settings) { SettingsScreen() }
+        composable(Routes.NewsList) { NewsListScreen(navController)}
     }
 }
 

@@ -1,6 +1,7 @@
 package com.example.mystocksapp.Api
 
 import com.example.mystocksapp.data.Dao.StockDetails
+import com.example.mystocksapp.data.Dao.StockNews
 import com.example.mystocksapp.data.Dao.Stocks
 import retrofit2.Response
 import retrofit2.http.GET
@@ -31,12 +32,10 @@ interface StocksApi {
 
     @GET("/v2/reference/news")
     suspend fun getStockNews(
-        @Query("published_utc") publishedUtc:String,
-        @Query("published_utc.gt") publishedUtcGt:String,
-        @Query("published_utc.lte") publishedUtcLte:String,
-        @Query("order") order:String = "asc",
+        @Query("published_utc.gt") publishedUtcGt:String? = "",
+        @Query("order") order:String = "desc",
         @Query("limit") limit:Int = 1000,
         @Query("sort") sort:String = "published_utc"
-    ) : Response<StocksResponse<StockDetails>>
+    ) : Response<StocksResponse<List<StockNews>>>
 
 }

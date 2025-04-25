@@ -6,7 +6,7 @@ import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
 import io.objectbox.relation.ToOne
 
-@Entity
+//@Entity //todo
 data class TickerToNewsEntity (
     @Id var id:Long=0,
 ){
