@@ -91,7 +91,7 @@ fun StockDetailScreen(
                             text = "${stock.name ?: "Unknown"} (${stock.ticker ?: ticker})",
                             style = MaterialTheme.typography.headlineMedium,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                     }
 
@@ -112,11 +112,11 @@ fun StockDetailScreen(
                             text = buildAnnotatedString {
                                 append(displayText)
                                 if (!expanded) {
-                                    withStyle(style = MaterialTheme.typography.bodySmall.toSpanStyle().copy(color = MaterialTheme.colorScheme.primary)) {
+                                    withStyle(style = MaterialTheme.typography.bodySmall.toSpanStyle().copy(color = MaterialTheme.colorScheme.onBackground)) {
                                         append(" See more")
                                     }
                                 } else {
-                                    withStyle(style = MaterialTheme.typography.bodySmall.toSpanStyle().copy(color = MaterialTheme.colorScheme.primary)) {
+                                    withStyle(style = MaterialTheme.typography.bodySmall.toSpanStyle().copy(color = MaterialTheme.colorScheme.onBackground)) {
                                         append(" See less")
                                     }
                                 }
@@ -139,7 +139,7 @@ fun StockDetailScreen(
                         DetailRow(title = "Homepage") {
                             Text(
                                 text = url,
-                                color = MaterialTheme.colorScheme.secondary,
+                                color = MaterialTheme.colorScheme.onBackground,
                                 modifier = Modifier.clickable {
                                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                                     context.startActivity(intent)
@@ -295,14 +295,29 @@ fun LineChartComposable(entries: List<Entry>) {
     val chart = remember { LineChart(context) }
 
     val lineDataSet = LineDataSet(entries, "Stock Price")
-    lineDataSet.color = Color.Green.toArgb()
-    lineDataSet.valueTextColor = Color.Black.toArgb()
+    lineDataSet.color = MaterialTheme.colorScheme.onPrimary.toArgb()
+    lineDataSet.valueTextColor = MaterialTheme.colorScheme.onSecondary.toArgb()
 
     val lineData = LineData(lineDataSet)
+    chart.xAxis.apply {
+        textColor = MaterialTheme.colorScheme.onBackground.toArgb() // Numbers color
+        axisLineColor = MaterialTheme.colorScheme.onBackground.toArgb() // Axis line color
+        gridColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f).toArgb() // Grid lines color
+        setDrawGridLines(true)
+        setDrawAxisLine(true)
+        setDrawLabels(false)
+    }
+    chart.axisLeft.apply {
+        textColor = MaterialTheme.colorScheme.onBackground.toArgb()
+        axisLineColor = MaterialTheme.colorScheme.onBackground.toArgb()
+        gridColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f).toArgb()
+        chart.legend.textColor = MaterialTheme.colorScheme.onBackground.toArgb()
+    }
 
     LaunchedEffect(entries) {
         chart.data = lineData
-        chart.xAxis.setDrawLabels(false)
+        chart.axisRight.isEnabled = false
+        chart.description.isEnabled = false
         chart.invalidate()
     }
 

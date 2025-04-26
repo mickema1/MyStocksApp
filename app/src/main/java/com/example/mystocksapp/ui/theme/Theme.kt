@@ -12,15 +12,32 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = black,
+    secondary = black,
+    tertiary = black,
+    background = darkGray,
+    onBackground = lightGreen,
+    onPrimary = lightGreen,
+    onSecondary = lightGreen,
+    onTertiary = darkGray,
+    onSurface = lightGreen,
+    onError = lightGreen,
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = darkGray,
+    secondary = lightGray,
+    tertiary = lightGray,
+    background = veryLightGray,
+    onBackground = darkGreen,
+    onPrimary = lightGreen,
+    onSecondary = darkGreen,
+    onTertiary = black,
+    onSurface = darkGreen,
+    onError = darkGreen,
+
+
+
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -30,14 +47,16 @@ private val LightColorScheme = lightColorScheme(
     onTertiary = Color.White,
     onBackground = Color(0xFF1C1B1F),
     onSurface = Color(0xFF1C1B1F),
-    */
+   */
 )
+
+
 
 @Composable
 fun MyStocksAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

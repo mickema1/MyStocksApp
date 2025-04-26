@@ -11,8 +11,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -55,7 +57,15 @@ fun StockListScreen(
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
             placeholder = { Text("Search for stocks by name...") },
-            singleLine = true
+            singleLine = true,
+            colors = TextFieldDefaults.colors(
+                focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
+                focusedContainerColor = MaterialTheme.colorScheme.tertiary,
+                unfocusedContainerColor = MaterialTheme.colorScheme.tertiary
+
+            )
+
         )
 
         Button(
