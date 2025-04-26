@@ -5,15 +5,15 @@ object Routes {
     const val StocksList = "stocksList"
     const val StocksDetail = "stocksDetail/{ticker}"
     const val SavedStocks = "savedStocks"
-    const val NewsDetail = "newsDetail/{news}"
+    const val NewsDetail = "newsDetail/{newsId}"
     const val NewsList = "newsList"
 
     fun stockDetail(ticker: String): String {
         return "stocksDetail/$ticker"
     }
 
-    fun newsDetail(news: String): String {
-        return "stocksDetail/$news"
+    fun newsDetail(newsId: Long): String {
+        return "newsDetail/$newsId"
     }
 
 }

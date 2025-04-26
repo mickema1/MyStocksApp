@@ -1,13 +1,10 @@
 package com.example.mystocksapp.data.Entity
 
-import com.example.mystocksapp.data.Entity.LinkTableEntity.KeywordToNewsEntity
-import com.example.mystocksapp.data.Entity.LinkTableEntity.TickerToNewsEntity
-import io.objectbox.annotation.Backlink
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
 import io.objectbox.annotation.Index
 import io.objectbox.annotation.Unique
-import io.objectbox.relation.ToMany
+
 
 
 @Entity
@@ -26,11 +23,6 @@ data class SavedNewsEntity (
     var articleUrl : String? = null,
     var image : String? = null,
     var description : String? = null,
-){
-    //todo
-        //@Backlink(to = "news")
-        //lateinit var tickers: ToMany<TickerToNewsEntity>
-
-        //@Backlink(to = "news")
-        //lateinit var keywords: ToMany<KeywordToNewsEntity>
-}
+    var keywords : String? = null,
+    var tickers : String? = null
+)

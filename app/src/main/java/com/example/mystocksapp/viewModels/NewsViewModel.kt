@@ -22,7 +22,6 @@ class NewsViewModel(
 
     private val _savedNews = MutableStateFlow<ApiResult<List<SavedNewsEntity>>>(ApiResult.Loading)
     val savedNews: StateFlow<ApiResult<List<SavedNewsEntity>>> = _savedNews.asStateFlow()
-    //todo perhaps search?... maybe? idk...
 
     fun getNews(latestSavedUtc: String? = null){
         viewModelScope.launch {
@@ -66,7 +65,7 @@ class NewsViewModel(
 
     fun refreshNewsFromApiAndUpdateLocal() {
         viewModelScope.launch {
-            //newsRepo.clearAllNews()
+            //newsRepo.clearAllNews() //delete all entries for testing purposes
             val savedList = (newsRepo.getAllByDate() as? ApiResult.Success)?.data.orEmpty()
             val latestUtc = savedList.maxByOrNull { it.publishedUtc }?.publishedUtc
                 val resp = stocksApi.getStockNews(publishedUtcGt = latestUtc)
@@ -74,7 +73,7 @@ class NewsViewModel(
             if (resp.isSuccessful) {
                 val incoming = resp.body()?.data.orEmpty()
                 val toSave = incoming.map { dto ->
-                    SavedNewsEntity(
+                    return@map SavedNewsEntity(
                         apiId        = dto.apiId,
                         name         = dto.name,
                         homepageUrl  = dto.homepageUrl,
@@ -85,7 +84,9 @@ class NewsViewModel(
                         publishedUtc = dto.publishedUtc,
                         articleUrl   = dto.articleUrl,
                         image        = dto.image,
-                        description  = dto.description
+                        description  = dto.description,
+                        keywords     = dto.keywords.toString(),
+                        tickers      = dto.tickers.toString()
                     )
                 }
                 newsRepo.saveNews(toSave)

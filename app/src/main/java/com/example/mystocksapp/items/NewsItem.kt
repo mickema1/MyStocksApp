@@ -23,7 +23,7 @@ fun NewsItem(news: SavedNewsEntity, navController: NavController, ) {
         .fillMaxWidth()
         .padding(8.dp)
         .clickable {
-            navController.navigate(Routes.newsDetail(news=news.apiId))
+            navController.navigate(Routes.newsDetail(newsId=news.id))
         }
     ) {
         Text(text = news.title, style = MaterialTheme.typography.titleMedium)

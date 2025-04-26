@@ -13,6 +13,7 @@ import com.example.mystocksapp.data.Entity.SavedNewsEntity
 import com.example.mystocksapp.data.Entity.SavedTickerEntity
 import com.example.mystocksapp.repository.NewsRepository
 import com.example.mystocksapp.repository.SavedTickersRepository
+import com.example.mystocksapp.viewModels.NewsDetailsViewModel
 import com.example.mystocksapp.viewModels.NewsViewModel
 import com.example.mystocksapp.viewModels.SavedTickerViewModel
 import com.example.mystocksapp.viewModels.StockDetailsViewModel
@@ -39,6 +40,7 @@ val viewModelModule = module {
     viewModel { SavedTickerViewModel(get(),get()) }
     viewModel { StockDetailsViewModel(get())}
     viewModel { NewsViewModel(get(), get()) }
+    viewModel { NewsDetailsViewModel(get()) }
 }
 
 val imageModule = module {
@@ -63,11 +65,6 @@ val objectBoxModule = module {
     single(named("newsBox")) {
         get<BoxStore>().boxFor(SavedNewsEntity::class.java)
     }
-}
-
-val helperModule = module {
-    //single { NotificationHelper(androidContext()) }
-    //single { NotificationSchedulerHelper(androidContext()) } //úkol č. 3
 }
 
 fun provideImageLoader(androidContext: Context): ImageLoader {

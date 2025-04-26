@@ -1,9 +1,11 @@
 package com.example.mystocksapp
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,26 +20,25 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.composable
 import androidx.navigation.NavType
-import androidx.navigation.NavController
 import androidx.navigation.navArgument
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.mystocksapp.ui.theme.MyStocksAppTheme
 import org.koin.core.context.startKoin
 import androidx.navigation.compose.rememberNavController
 import com.example.mystocksapp._const.BottomNavItem
 import com.example.mystocksapp._const.Routes
+import com.example.mystocksapp.screens.NewsDetailScreen
 import com.example.mystocksapp.screens.NewsListScreen
 import com.example.mystocksapp.screens.SavedTickerScreen
 import com.example.mystocksapp.screens.StockDetailScreen
@@ -47,6 +48,7 @@ import org.koin.android.ext.koin.androidContext
 
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         startKoin {
@@ -56,8 +58,7 @@ class MainActivity : ComponentActivity() {
                 viewModelModule,
                 networkModule,
                 objectBoxModule,
-                imageModule,
-                helperModule)
+                imageModule)
         }
         setContent {
             MyStocksAppTheme {
@@ -68,6 +69,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(navController: NavHostController) {
@@ -92,6 +94,7 @@ fun MainScreen(navController: NavHostController) {
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = Color.White
                 ),
+
             )
         },
         bottomBar = {
@@ -139,6 +142,7 @@ fun MainScreen(navController: NavHostController) {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
     NavHost(
@@ -147,7 +151,7 @@ fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
         modifier = Modifier.padding(innerPadding)
     ) {
         composable(Routes.StocksList) { StockListScreen(navController) }
-        composable(
+        /*composable(
             route = "${Routes.StocksDetail}/{ticker}",
             arguments = listOf(navArgument("ticker") { type = NavType.StringType })
         ) { navBackStackEntry ->
@@ -157,8 +161,10 @@ fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
             } else {
                 Text("No ticker provided")
             }
-        }
+        }*/
+
         composable(Routes.SavedStocks) { SavedTickerScreen(navController) }
+
         composable(Routes.StocksDetail) { navBackStackEntry ->
             val ticker = navBackStackEntry.arguments?.getString("ticker")
             if (ticker!= null) {
@@ -166,11 +172,24 @@ fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
                     ticker = ticker,
                     navController = navController,
                 )
-            } }
+            }
+        }
+
         composable(Routes.NewsList) { NewsListScreen(navController)}
+
+        composable(Routes.NewsDetail) { navBackStackEntry ->
+            val _newsId = navBackStackEntry.arguments?.getString("newsId")
+            if (_newsId!= null) {
+                NewsDetailScreen(
+                    newsId = _newsId,
+                    navController = navController,
+                )
+            }
+        }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {

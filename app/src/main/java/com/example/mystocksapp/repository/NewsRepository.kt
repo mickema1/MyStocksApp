@@ -35,5 +35,9 @@ class NewsRepository(private val savedNewsBox:Box<SavedNewsEntity>) {
         ApiResult.Error("Error fetching news from DB: ${e.message}")
         }
     }
+
+    fun getById(Id : String) : SavedNewsEntity?{
+        return savedNewsBox.get(Id.toLong())
+    }
 }
 
