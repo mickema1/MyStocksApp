@@ -94,11 +94,7 @@ fun provideOkHttpClient(): OkHttpClient {
 
 
 fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
-    //TODO Get ApiKey from properties
-    //val polygonApiKey: String = System.getProperty("polygonApiKey") ?: throw IllegalStateException("API key is missing")
-
-    val polygonApiKey: String = "Dqp4SuuiUB_5ynx3TB29v4tnpzrUrThp" //todo read from properties
-
+    val polygonApiKey: String= BuildConfig.POLYGON_API_KEY
     val apiKeyInterceptor = Interceptor { chain -> val originalRequest = chain.request()
 
         val newUrl = originalRequest.url.newBuilder()
