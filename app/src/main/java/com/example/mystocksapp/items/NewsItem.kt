@@ -8,6 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.mystocksapp._const.Routes
@@ -26,7 +28,7 @@ fun NewsItem(news: SavedNewsEntity, navController: NavController, ) {
             navController.navigate(Routes.newsDetail(newsId=news.id))
         }
     ) {
-        Text(text = news.title, style = MaterialTheme.typography.titleMedium)
+        Text(text = news.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
         Text(
             text = formatPublishedUtc(news.publishedUtc),
             style = MaterialTheme.typography.bodySmall
