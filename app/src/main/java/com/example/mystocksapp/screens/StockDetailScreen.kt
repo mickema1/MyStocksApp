@@ -64,6 +64,7 @@ fun StockDetailScreen(
         viewModel.getStockDetails(ticker)
     }
 
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -238,6 +239,13 @@ fun StockDetailScreen(
                 } else {
                     Text(text = "Stock not found", style = MaterialTheme.typography.bodyLarge)
                 }
+                Button(
+                    onClick = { navController.popBackStack() },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Back to List")
+                }
+
             }
 
             is ApiResult.Error -> {

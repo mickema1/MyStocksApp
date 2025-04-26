@@ -4,11 +4,9 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -21,16 +19,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.composable
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorMatrixColorFilter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
@@ -119,17 +112,14 @@ fun MainScreen(navController: NavHostController) {
                         selected = selectedItem == index,
                         onClick = {
                             selectedItem = index
-                            navController.navigate(item.screenRoute) {
-                                navController.graph.startDestinationRoute?.let { screenRoute ->
-                                    popUpTo(screenRoute) {  //odebrání ostatních obrazovek z back stacku
-                                        saveState =
-                                            true//uložení stavu obrazovek odstraněných z back stacku
+                            if (navController.currentDestination?.route != item.screenRoute) {
+                                navController.navigate(item.screenRoute) {
+                                    popUpTo(Routes.StocksList) {
+                                    saveState = true
                                     }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                                launchSingleTop =
-                                    true //zabraňuje vytváření nových instancí stejné obrazovky
-                                restoreState =
-                                    true //obnovení stavu, pokud byl uložen pomocí saveState
                             }
                         },
                         colors = NavigationBarItemDefaults.colors(
@@ -157,17 +147,6 @@ fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
         modifier = Modifier.padding(innerPadding)
     ) {
         composable(Routes.StocksList) { StockListScreen(navController) }
-        /*composable(
-            route = "${Routes.StocksDetail}/{ticker}",
-            arguments = listOf(navArgument("ticker") { type = NavType.StringType })
-        ) { navBackStackEntry ->
-            val ticker = navBackStackEntry.arguments?.getString("ticker")
-            if (ticker != null) {
-                StockDetailScreen(navController ,ticker = ticker)
-            } else {
-                Text("No ticker provided")
-            }
-        }*/
 
         composable(Routes.SavedStocks) { SavedTickerScreen(navController) }
 

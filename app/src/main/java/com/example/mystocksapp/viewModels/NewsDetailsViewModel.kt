@@ -1,14 +1,10 @@
 package com.example.mystocksapp.viewModels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mystocksapp.Api.ApiResult
-import com.example.mystocksapp.data.Dao.StockDetails
-import com.example.mystocksapp.data.Dao.StockNews
 import com.example.mystocksapp.data.Entity.SavedNewsEntity
 import com.example.mystocksapp.repository.NewsRepository
-import com.github.mikephil.charting.data.Entry
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
