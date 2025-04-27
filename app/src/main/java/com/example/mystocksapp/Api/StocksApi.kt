@@ -27,6 +27,7 @@ interface StocksApi {
         @Path("timespan") timespan: String,
         @Path("from") from: String,
         @Path("to") to: String,
+        @Query("limit") limit:Int = 50000
 
     ): Response<AggregateBarsResponse>
 

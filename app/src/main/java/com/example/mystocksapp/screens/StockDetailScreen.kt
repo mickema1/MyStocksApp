@@ -19,6 +19,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -177,10 +178,9 @@ fun StockDetailScreen(
                     Row {
                         Button(onClick = {
                             val today = LocalDate.now(ZoneOffset.UTC)
-                            val yesterday = today.minusDays(2)
-                            val yesterdayStart = today.minusDays(3)
-                            val fromDate = yesterdayStart.toString()
-                            val toDate = yesterday.toString()
+                            val end = today.minusDays(7)
+                            val fromDate = end.toString()
+                            val toDate = today.toString()
 
                             viewModel.getStockGraph(
                                 ticker = ticker,
@@ -189,9 +189,9 @@ fun StockDetailScreen(
                                 timespan = "hour"
                             )
                         }) {
-                            Text("Two days ago")
+                            Text("Week")
                         }
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
                         Button(onClick = {
                             val today = LocalDate.now(ZoneOffset.UTC)
                             val thirtyDays = today.minusDays(30)
@@ -206,26 +206,25 @@ fun StockDetailScreen(
                                 timespan = "day"
                             )
                         }) {
-                            Text("Last Month")
+                            Text("Month")
                         }
 
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
 
                         Button(onClick = {
                             val today = LocalDate.now(ZoneOffset.UTC)
-                            val yesterday = today.minusDays(1)
                             val yesterdayStart = today.minusDays(365)
                             val fromDate = yesterdayStart.toString()
-                            val toDate = yesterday.toString()
+                            val toDate = today.toString()
 
                             viewModel.getStockGraph(
                                 ticker = ticker,
                                 from = fromDate,
                                 to = toDate,
-                                timespan = "month"
+                                timespan = "day"
                             )
                         }) {
-                            Text("Past year")
+                            Text("Year")
                         }
                     }
                     Spacer(modifier = Modifier.height(16.dp))
@@ -234,6 +233,7 @@ fun StockDetailScreen(
 
                     if (graphState.value is ApiResult.Success && (graphState.value as ApiResult.Success).data.isNotEmpty()) {
                         StockGraphScreen(viewModel)
+                        LatestStockData(viewModel)
                     }
 
                 } else {
@@ -311,6 +311,8 @@ fun LineChartComposable(entries: List<Entry>) {
     val lineDataSet = LineDataSet(entries, "Stock Price")
     lineDataSet.color = MaterialTheme.colorScheme.onPrimary.toArgb()
     lineDataSet.valueTextColor = MaterialTheme.colorScheme.onSecondary.toArgb()
+    lineDataSet.setDrawCircles(false)
+    lineDataSet.setDrawValues(false)
 
     val lineData = LineData(lineDataSet)
     chart.xAxis.apply {
@@ -339,4 +341,36 @@ fun LineChartComposable(entries: List<Entry>) {
         factory = { chart },
         modifier = Modifier.fillMaxWidth().height(300.dp)
     )
+}
+@Composable
+fun LatestStockData(viewModel: StockDetailsViewModel) {
+    val graphDataResult by viewModel.graphData.collectAsState()
+
+    when (graphDataResult) {
+        is ApiResult.Success -> {
+            val entries = (graphDataResult as ApiResult.Success).data
+            if (entries.isNotEmpty()) {
+                val latestEntry = entries.last()
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Latest Close Price: ${latestEntry.y}",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+            }
+        }
+        is ApiResult.Error ->{
+        Text("No recent values to show")
+        }
+        ApiResult.Loading ->{
+        LinearProgressIndicator()}
+    }
 }

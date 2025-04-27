@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.mystocksapp._const.Routes
@@ -36,7 +35,7 @@ fun SavedTickerItem(ticker: SavedTickerEntity,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = ticker.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)
+            Text(text = ticker.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             Text(text = ticker.ticker, style = MaterialTheme.typography.bodyMedium)
         }
 

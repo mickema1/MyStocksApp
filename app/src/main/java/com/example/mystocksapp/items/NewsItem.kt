@@ -28,7 +28,7 @@ fun NewsItem(news: SavedNewsEntity, navController: NavController, ) {
             navController.navigate(Routes.newsDetail(newsId=news.id))
         }
     ) {
-        Text(text = news.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold , textDecoration = TextDecoration.Underline)
+        Text(text = news.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
         Text(
             text = formatPublishedUtc(news.publishedUtc),
             style = MaterialTheme.typography.bodySmall

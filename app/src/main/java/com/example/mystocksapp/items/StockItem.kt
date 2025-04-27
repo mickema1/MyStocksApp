@@ -45,7 +45,7 @@ fun StockItem(
         Spacer(Modifier.width(16.dp))
 
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = stocks.name, fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)
+            Text(text = stocks.name, fontWeight = FontWeight.Bold)
             Text(text = "Locale: ${stocks.locale}")
             Text(text = "Currency: ${stocks.currencyName}")
             Text(text = "Ticker: ${stocks.ticker}")
