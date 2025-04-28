@@ -308,7 +308,7 @@ fun LineChartComposable(entries: List<Entry>) {
     val context = LocalContext.current
     val chart = remember { LineChart(context) }
 
-    val lineDataSet = LineDataSet(entries, "Stock Price")
+    val lineDataSet = LineDataSet(entries, "Stock Price in USD")
     lineDataSet.color = MaterialTheme.colorScheme.onPrimary.toArgb()
     lineDataSet.valueTextColor = MaterialTheme.colorScheme.onSecondary.toArgb()
     lineDataSet.setDrawCircles(false)
@@ -359,7 +359,7 @@ fun LatestStockData(viewModel: StockDetailsViewModel) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Latest Close Price: ${latestEntry.y}",
+                        text = "Latest Close Price: ${latestEntry.y} $",
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold
                     )
