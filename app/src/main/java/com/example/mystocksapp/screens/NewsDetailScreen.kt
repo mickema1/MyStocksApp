@@ -59,7 +59,7 @@ fun NewsDetailScreen(
         when (newsDetailResult) {
             is ApiResult.Loading -> {
                 Box(Modifier.fillMaxSize()) {
-                    CircularProgressIndicator(Modifier.align(Alignment.Center))
+                    CircularProgressIndicator(Modifier.align(Alignment.Center), color = MaterialTheme.colorScheme.onPrimary)
                 }
             }
             is ApiResult.Success -> {

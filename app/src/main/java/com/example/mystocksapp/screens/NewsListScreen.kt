@@ -60,7 +60,7 @@ fun NewsListScreen(
         when (savedNews) {
             is ApiResult.Loading -> {
                 Box(modifier = Modifier.fillMaxSize()) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center),color = MaterialTheme.colorScheme.onPrimary)
                 }
             }
 

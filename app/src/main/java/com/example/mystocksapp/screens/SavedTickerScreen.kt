@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -36,7 +37,7 @@ fun SavedTickerScreen(navController: NavController, viewModel: SavedTickerViewMo
 
         when (savedListResult) {
             is ApiResult.Loading -> {
-                CircularProgressIndicator()
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
             }
             is ApiResult.Success -> {
                 val savedList = (savedListResult as ApiResult.Success<List<SavedTickerEntity>>).data

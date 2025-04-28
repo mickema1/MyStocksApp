@@ -76,7 +76,7 @@ fun StockDetailScreen(
         when (stockDetailResult) {
             is ApiResult.Loading -> {
                 Box(modifier = Modifier.fillMaxSize()) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = MaterialTheme.colorScheme.onPrimary)
                 }
             }
 
@@ -291,7 +291,7 @@ fun StockGraphScreen(viewModel: StockDetailsViewModel) {
 
     when (graphDataResult) {
         is ApiResult.Loading -> {
-            CircularProgressIndicator()
+            CircularProgressIndicator( color = MaterialTheme.colorScheme.onPrimary)
         }
         is ApiResult.Success -> {
             val entries = (graphDataResult as ApiResult.Success).data
@@ -371,6 +371,6 @@ fun LatestStockData(viewModel: StockDetailsViewModel) {
         Text("No recent values to show")
         }
         ApiResult.Loading ->{
-        LinearProgressIndicator()}
+        LinearProgressIndicator( color = MaterialTheme.colorScheme.onPrimary)}
     }
 }
